@@ -9,6 +9,157 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "../db/cv-backend.db"
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id        String   @id @default(uuid(4)) @map("id")
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  jobTitle  String   @map("job_title")
+  email     String   @unique @map("email")
+  phone     String   @map("phone")
+  summary   String   @map("summary")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  cityId          String           @map("city_id")
+  location        City             @relation(fields: [cityId], references: [id])
+  workExperiences WorkExperience[]
+  educations      Education[]
+  ProfileSkill    ProfileSkill[]
+
+  @@map("profiles")
+}
+
+model Country {
+  id   String @id @default(uuid(4)) @map("id")
+  name String @map("name")
+  iso2 String @map("iso2")
+
+  states State[]
+  cities City[]
+
+  @@map("countries")
+}
+
+model State {
+  id        String @id @default(uuid(4)) @map("id")
+  name      String @map("name")
+  countryId String @map("country_id")
+
+  country Country @relation(fields: [countryId], references: [id])
+  cities  City[]
+
+  @@map("states")
+}
+
+model City {
+  id        String @id @default(uuid(4)) @map("id")
+  name      String @map("name")
+  stateId   String @map("state_id")
+  countryId String @map("country_id")
+
+  state           State            @relation(fields: [stateId], references: [id])
+  country         Country          @relation(fields: [countryId], references: [id])
+  profiles        Profile[]
+  workExperiences WorkExperience[]
+  educations      Education[]
+
+  @@map("cities")
+}
+
+model WorkExperience {
+  id          String    @id @default(uuid(4)) @map("id")
+  jobTitle    String    @map("job_title")
+  company     String    @map("company")
+  description String[]  @map("description")
+  isCurrent   Boolean   @map("is_current")
+  startDate   DateTime  @map("start_date")
+  endDate     DateTime? @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  cityId    String      @map("city_id")
+  location  City        @relation(fields: [cityId], references: [id])
+  profileId String      @map("profile_id")
+  profile   Profile     @relation(fields: [profileId], references: [id])
+  WorkSkill WorkSkill[]
+
+  @@map("work_experiences")
+}
+
+model Education {
+  id         String    @id @default(uuid(4)) @map("id")
+  degree     String    @map("degree")
+  institute  String    @map("institute")
+  cgpa       Float     @map("cgpa")
+  awards     String[]  @map("awards")
+  activities String[]  @map("activities")
+  isCurrent  Boolean   @map("is_current")
+  startDate  DateTime  @map("start_date")
+  endDate    DateTime? @map("end_date")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  cityId         String           @map("city_id")
+  location       City             @relation(fields: [cityId], references: [id])
+  profileId      String           @map("profile_id")
+  profile        Profile          @relation(fields: [profileId], references: [id])
+  EducationSkill EducationSkill[]
+
+  @@map("educations")
+}
+
+model Skill {
+  id       String   @id @default(uuid(4)) @map("id")
+  category String   @map("category")
+  skill    String   @unique @map("skill")
+  subskill String[] @map("subskill")
+
+  workSkills      WorkSkill[]
+  educationSkills EducationSkill[]
+  profileSkills   ProfileSkill[]
+
+  @@map("skills")
+}
+
+model WorkSkill {
+  id               String         @id @default(uuid(4)) @map("id")
+  workExperienceId String         @map("work_experience_id")
+  workExperience   WorkExperience @relation(fields: [workExperienceId], references: [id])
+  skillId          String         @map("skill_id")
+  skill            Skill          @relation(fields: [skillId], references: [id])
+
+  @@map("work_skills")
+}
+
+model EducationSkill {
+  id          String    @id @default(uuid(4)) @map("id")
+  educationId String    @map("education_id")
+  education   Education @relation(fields: [educationId], references: [id])
+  skillId     String    @map("skill_id")
+  skill       Skill     @relation(fields: [skillId], references: [id])
+
+  @@map("education_skills")
+}
+
+model ProfileSkill {
+  id        String   @id @default(uuid(4)) @map("id")
+  profileId String   @map("profile_id")
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  skillId   String   @map("skill_id")
+  skill     Skill    @relation(fields: [skillId], references: [id])
+  context   String   @map("context") // Could be "work", "education", etc.
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("profile_skills")
+}
+
+model Misc {
+  id   String @id @default(uuid(4)) @map("id")
+  item Json   @map("item")
+
+  @@map("misc")
 }
