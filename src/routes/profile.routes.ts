@@ -1,4 +1,7 @@
-import { getProfiles } from '@controllers/profile.controller';
+import {
+  getAllProfiles,
+  getProfileById,
+} from '@controllers/profile.controller';
 import RoutesClass from './RoutesClass';
 
 class ProfileRoutes extends RoutesClass {
@@ -7,7 +10,8 @@ class ProfileRoutes extends RoutesClass {
   }
 
   initializeRouter(): void {
-    this.router.get('/', getProfiles);
+    this.router.get('/', getAllProfiles);
+    this.router.get('/:id', getProfileById);
   }
 }
 
