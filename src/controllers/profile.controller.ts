@@ -1,11 +1,9 @@
-import ProfileServices from '@services/profile.service';
+import userServices from '@services/profile.service';
 import { Request, Response } from 'express';
 
-const profileServices = new ProfileServices();
-
-export async function getAllProfiles(req: Request, res: Response) {
+export async function handleGetAllProfiles(req: Request, res: Response) {
   try {
-    const profiles = await profileServices.getAllProfiles();
+    const profiles = await userServices.getAllProfiles();
 
     res.json({
       message: 'Get all profiles',
@@ -16,14 +14,30 @@ export async function getAllProfiles(req: Request, res: Response) {
   }
 }
 
-export async function getProfileById(req: Request, res: Response) {
+export async function handleGetSpecificProfile(req: Request, res: Response) {
   try {
     const id = req.params.id;
 
-    const profile = await profileServices.getProfileById(id);
+    const profile = await userServices.getProfileById(id);
 
     res.json({
       message: 'Get profile by ID',
+      data: profile,
+    });
+  } catch (err) {
+    res.status(500).send('Something went wrong');
+  }
+}
+
+export async function processUpdateProfile(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const body = req.body;
+
+    const profile = await userServices.updateProfile(id, body);
+
+    res.json({
+      message: 'Update profile by ID',
       data: profile,
     });
   } catch (err) {

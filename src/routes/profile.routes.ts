@@ -1,18 +1,14 @@
 import {
-  getAllProfiles,
-  getProfileById,
+  handleGetAllProfiles,
+  handleGetSpecificProfile,
+  processUpdateProfile,
 } from '@controllers/profile.controller';
-import RoutesClass from './RoutesClass';
+import { Router } from 'express';
 
-class ProfileRoutes extends RoutesClass {
-  constructor() {
-    super();
-  }
+const router = Router();
 
-  initializeRouter(): void {
-    this.router.get('/', getAllProfiles);
-    this.router.get('/:id', getProfileById);
-  }
-}
+router.get('/', handleGetAllProfiles);
+router.get('/:id', handleGetSpecificProfile);
+router.patch('/:id', processUpdateProfile);
 
-export default new ProfileRoutes().router;
+export default router;

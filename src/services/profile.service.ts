@@ -1,49 +1,60 @@
-import ServicesClass from './ServicesClass';
+import { PrismaClient, Profile } from '@prisma/client';
 
-export default class ProfileServices extends ServicesClass {
-  constructor() {
-    super();
-  }
+const prisma = new PrismaClient();
 
-  async getAllProfiles() {
-    return await this.prisma.profile.findMany({
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-      },
-      orderBy: {
-        updatedAt: 'asc',
-      },
-    });
-  }
+async function getAllProfiles() {
+  return await prisma.profile.findMany({
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+    },
+    orderBy: {
+      updatedAt: 'asc',
+    },
+  });
+}
 
-  async getProfileById(id: string) {
-    return await this.prisma.profile.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        jobTitle: true,
-        email: true,
-        phone: true,
-        summary: true,
-        location: {
-          select: {
-            state: {
-              select: {
-                name: true,
-              },
+async function getProfileById(id: string) {
+  return await prisma.profile.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      jobTitle: true,
+      email: true,
+      phone: true,
+      summary: true,
+      location: {
+        select: {
+          state: {
+            select: {
+              name: true,
             },
-            country: {
-              select: {
-                name: true,
-              },
+          },
+          country: {
+            select: {
+              name: true,
             },
           },
         },
       },
-    });
-  }
+    },
+  });
 }
+
+async function updateProfile(id: string, data: Partial<Profile>) {
+  return await prisma.profile.update({
+    where: { id },
+    data,
+  });
+}
+
+const userServices = {
+  getAllProfiles,
+  getProfileById,
+  updateProfile,
+};
+
+export default userServices;
