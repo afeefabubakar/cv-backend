@@ -14,8 +14,15 @@ async function addWorkExperience(profileId: string, data: WorkExperience) {
   });
 }
 
+async function deleteWorkExperience(id: string) {
+  return await prisma.workExperience.delete({
+    where: { id },
+  });
+}
+
 const workExperienceService = {
   addWorkExperience,
+  deleteWorkExperience,
 };
 
 export default workExperienceService;

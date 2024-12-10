@@ -10,16 +10,24 @@ export async function processAddWorkExperience(req: Request, res: Response) {
     res.status(400).json({ message: 'Profile ID is required' });
   }
 
+  const structuredData = {
+    ...data,
+    cityId: data.location,
+  };
+
+  delete structuredData.location;
+
   try {
     const workExperience = await workExperienceService.addWorkExperience(
       profileId,
-      data
+      structuredData
     );
     res.json({
       message: 'Work experience created successfully',
       workExperience,
     });
   } catch (error) {
+    console.error(error);
     if (error instanceof Prisma.PrismaClientValidationError) {
       res.status(400).json({
         message: 'Failed to create work experience',
@@ -28,5 +36,20 @@ export async function processAddWorkExperience(req: Request, res: Response) {
     } else {
       res.status(500).json({ message: 'Internal server error' });
     }
+  }
+}
+
+export async function processDeleteWorkExperience(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+
+    const workExperience = await workExperienceService.deleteWorkExperience(id);
+
+    res.json({
+      message: 'Work experience deleted successfully',
+      workExperience,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
   }
 }

@@ -28,14 +28,28 @@ async function getProfileById(id: string) {
       summary: true,
       location: {
         select: {
+          id: true,
+          name: true,
           state: {
             select: {
+              id: true,
               name: true,
             },
           },
           country: {
             select: {
+              id: true,
               name: true,
+            },
+          },
+        },
+      },
+      workExperiences: {
+        include: {
+          location: {
+            include: {
+              state: true,
+              country: true,
             },
           },
         },
