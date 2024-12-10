@@ -29,6 +29,7 @@ model Profile {
   workExperiences WorkExperience[]
   educations      Education[]
   ProfileSkill    ProfileSkill[]
+  misc            Misc[]
 
   @@map("profiles")
 }
@@ -160,6 +161,9 @@ model ProfileSkill {
 model Misc {
   id   String @id @default(uuid(4)) @map("id")
   item Json   @map("item")
+
+  profileId String  @map("profile_id")
+  profiles  Profile @relation(fields: [profileId], references: [id])
 
   @@map("misc")
 }
