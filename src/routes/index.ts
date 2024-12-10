@@ -1,22 +1,16 @@
 import { Router } from 'express';
-import RoutesClass from './RoutesClass';
 import profileRoutes from './profile.routes';
 
-class RootRoutes extends RoutesClass {
-  constructor() {
-    super();
-  }
+const root = Router();
+const api = Router();
 
-  initializeRouter() {
-    const api = Router();
-    this.router.get('/', (req, res) => {
-      res.json({
-        message: "Afeef's CV Backend",
-      });
-    });
-    this.router.use('/api', api);
-    api.use('/profile', profileRoutes);
-  }
-}
+root.get('/', (req, res) => {
+  res.json({
+    message: "Afeef's CV Backend",
+  });
+});
+root.use('/api', api);
 
-export default new RootRoutes().router;
+api.use('/profile', profileRoutes);
+
+export default root;
