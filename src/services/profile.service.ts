@@ -45,6 +45,9 @@ async function getProfileById(id: string) {
         },
       },
       workExperiences: {
+        orderBy: {
+          startDate: 'desc',
+        },
         include: {
           location: {
             include: {

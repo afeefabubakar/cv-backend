@@ -39,6 +39,33 @@ export async function processAddWorkExperience(req: Request, res: Response) {
   }
 }
 
+export async function processUpdateWorkExperience(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+
+    const structuredData = {
+      ...data,
+      cityId: data.location,
+    };
+
+    delete structuredData.location;
+
+    const workExperience = await workExperienceService.updateWorkExperience(
+      id,
+      data
+    );
+
+    res.json({
+      message: 'Work experience updated successfully',
+      workExperience,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 export async function processDeleteWorkExperience(req: Request, res: Response) {
   try {
     const id = req.params.id;
