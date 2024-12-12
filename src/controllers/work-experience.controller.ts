@@ -53,7 +53,7 @@ export async function processUpdateWorkExperience(req: Request, res: Response) {
 
     const workExperience = await workExperienceService.updateWorkExperience(
       id,
-      data
+      structuredData
     );
 
     res.json({
