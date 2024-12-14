@@ -16,8 +16,23 @@ async function createEducation(profileId: string, data: Education) {
   });
 }
 
+async function updateEducation(id: string, data: Partial<Education>) {
+  return await prisma.education.update({
+    where: { id },
+    data,
+  });
+}
+
+async function deleteEducation(id: string) {
+  return await prisma.education.delete({
+    where: { id },
+  });
+}
+
 const educationService = {
   createEducation,
+  updateEducation,
+  deleteEducation,
 };
 
 export default educationService;
