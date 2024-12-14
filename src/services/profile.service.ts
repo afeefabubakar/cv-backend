@@ -57,6 +57,19 @@ async function getProfileById(id: string) {
           },
         },
       },
+      educations: {
+        orderBy: {
+          startDate: 'desc',
+        },
+        include: {
+          location: {
+            include: {
+              state: true,
+              country: true,
+            },
+          },
+        },
+      },
     },
   });
 }
