@@ -1,4 +1,4 @@
-import educationService from '@services/education.routes';
+import educationService from '@services/education.service';
 import { Request, Response } from 'express';
 
 export async function processCreateEducation(req: Request, res: Response) {
