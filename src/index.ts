@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import root from './routes';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -9,6 +10,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: process.env.WEB_URL }));
 
 app.use('/', root);
 
