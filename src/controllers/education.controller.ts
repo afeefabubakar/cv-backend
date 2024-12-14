@@ -22,7 +22,7 @@ export async function processCreateEducation(req: Request, res: Response) {
 
     res.json({
       message: 'Education created successfully',
-      education,
+      data: education,
     });
   } catch (error) {
     console.error(error);
@@ -46,7 +46,10 @@ export async function processUpdateEducation(req: Request, res: Response) {
       id,
       structuredData
     );
-    res.json({ message: 'Education updated successfully', education });
+    res.json({
+      message: 'Education updated successfully',
+      data: education,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
@@ -58,7 +61,10 @@ export async function processDeleteEducation(req: Request, res: Response) {
 
   try {
     const education = await educationService.deleteEducation(id);
-    res.json({ message: 'Education deleted successfully', education });
+    res.json({
+      message: 'Education deleted successfully',
+      data: education,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });

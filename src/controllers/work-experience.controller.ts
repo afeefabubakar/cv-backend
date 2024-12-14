@@ -24,7 +24,7 @@ export async function processAddWorkExperience(req: Request, res: Response) {
     );
     res.json({
       message: 'Work experience created successfully',
-      workExperience,
+      data: workExperience,
     });
   } catch (error) {
     console.error(error);
@@ -58,7 +58,7 @@ export async function processUpdateWorkExperience(req: Request, res: Response) {
 
     res.json({
       message: 'Work experience updated successfully',
-      workExperience,
+      data: workExperience,
     });
   } catch (error) {
     console.error(error);
@@ -74,7 +74,7 @@ export async function processDeleteWorkExperience(req: Request, res: Response) {
 
     res.json({
       message: 'Work experience deleted successfully',
-      workExperience,
+      data: workExperience,
     });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
