@@ -1,5 +1,6 @@
 import educationRoutes from './education.routes';
 import locationRoutes from './location.routes';
+import miscRoutes from './misc.routes';
 import profileRoutes from './profile.routes';
 import skillRoutes from './skill.routes';
 import workExperienceRoutes from './work-experience.routes';
@@ -20,5 +21,6 @@ api.use('/work-experience', workExperienceRoutes);
 api.use('/location', locationRoutes);
 api.use('/education', educationRoutes);
 api.use('/skill', skillRoutes);
+api.use('/misc', miscRoutes);
 
 export default root;
