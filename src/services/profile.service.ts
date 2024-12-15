@@ -70,6 +70,18 @@ async function getProfileById(id: string) {
           },
         },
       },
+      ProfileSkill: {
+        select: {
+          id: true,
+          skill: {
+            select: {
+              id: true,
+              skill: true,
+              category: true,
+            },
+          },
+        },
+      },
     },
   });
 }
