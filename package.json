@@ -4,7 +4,7 @@
   "description": "A simple backend to store CV data",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
+    "build": "npx prisma migrate deploy && tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "start": "node dist/src/index.js",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts",
     "seed": "npx ts-node prisma/seed.ts",
