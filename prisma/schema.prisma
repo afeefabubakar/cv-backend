@@ -21,6 +21,7 @@ model Profile {
   email     String   @unique @map("email")
   phone     String   @map("phone")
   summary   String   @map("summary")
+  locked    Boolean  @default(false) @map("locked")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

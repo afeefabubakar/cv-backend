@@ -26,6 +26,7 @@ async function getProfileById(id: string) {
       email: true,
       phone: true,
       summary: true,
+      locked: true,
       location: {
         select: {
           id: true,
@@ -82,7 +83,32 @@ async function getProfileById(id: string) {
           },
         },
       },
+      misc: true,
     },
+  });
+}
+
+async function createProfile(data: Profile) {
+  return await prisma.profile.create({
+    data,
+  });
+}
+
+async function setProfileLock(id: string) {
+  const profile = await prisma.profile.findUnique({
+    where: { id },
+    select: { locked: true },
+  });
+
+  if (!profile) {
+    throw new Error('Profile not found');
+  }
+
+  const { locked } = profile;
+
+  return await prisma.profile.update({
+    where: { id },
+    data: { locked: !locked },
   });
 }
 
@@ -97,6 +123,8 @@ const userServices = {
   getAllProfiles,
   getProfileById,
   updateProfile,
+  createProfile,
+  setProfileLock,
 };
 
 export default userServices;
